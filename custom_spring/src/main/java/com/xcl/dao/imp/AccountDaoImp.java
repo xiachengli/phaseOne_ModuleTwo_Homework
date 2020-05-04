@@ -31,12 +31,12 @@ public class AccountDaoImp implements AccountDao {
         toAccount.setMoney(toAccount.getMoney().add(money));
 
         //更新
-        System.out.println("付款人："+update(fromAccount));
+        System.out.println("付款结果："+update(fromAccount));
 
         //认为制造异常
         //int i = 10/0;
 
-        System.out.println("收款人："+update(toAccount));
+        System.out.println("收款结果："+update(toAccount));
 
 
         //查询余额

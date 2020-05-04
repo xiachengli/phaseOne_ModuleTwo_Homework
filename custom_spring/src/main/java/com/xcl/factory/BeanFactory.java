@@ -113,14 +113,21 @@ public class BeanFactory {
             }
 
 
-            //Autowired
+            //已开启注解扫描，处理Autowired注解
             if (flag) {
                 AnnotationParseUtil.getAutowiredAnnotation(packageName,beans);
             }
 
+           //至此，对象创建完毕
+
+            //已开启注解扫描，处理Transaction注解
+            if (flag) {
+                AnnotationParseUtil.getTransactionAnnotation(BeanFactory.class.getClassLoader(),beans);
+            }
+
         } catch (Exception e) {
             System.out.println("解析失败"+e.getMessage());
-            throw  new RuntimeException("解析异常");
+            throw  new RuntimeException("解析失败");
 
 
         }finally {

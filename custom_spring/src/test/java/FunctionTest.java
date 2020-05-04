@@ -1,5 +1,7 @@
 import com.xcl.factory.BeanFactory;
 import com.xcl.service.AccountService;
+import com.xcl.service.imp.AccServiceImp;
+import com.xcl.service.imp.AccountServiceImp;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -22,9 +24,17 @@ public class FunctionTest {
 //    }
 
     //accountService对象
+    private AccServiceImp accServiceImp = (AccServiceImp)BeanFactory.getBean("accService");
     private AccountService accountService = (AccountService)BeanFactory.getBean("accountService");
+//    @Test
+//    public  void transfer(){
+//        //JDK动态代理
+//       accountService.transfer(123456789,123456799,new BigDecimal(1000));
+//    }
+
     @Test
-    public  void transfer(){
-        accountService.transfer(123456789,123456799,new BigDecimal(1000));
+    public  void transfer2(){
+        //CGLIB动态代理
+        accServiceImp.transfer(123456789,123456799,new BigDecimal(1000));
     }
 }

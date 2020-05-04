@@ -2,6 +2,9 @@ package com.xcl.utils;
 
 import com.xcl.annotation.Autowired;
 import com.xcl.annotation.Service;
+import com.xcl.annotation.Transaction;
+import com.xcl.proxy.DynamicProxy;
+import com.xcl.proxy.TransactionHandle;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
@@ -10,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 注解解析器
@@ -56,6 +60,39 @@ public class AnnotationParseUtil {
                     field.set(object,value);
                }
             }
+        }
+    }
+
+    /**
+     * 处理Transaction注解
+     * @param classLoader
+     * @param beans
+     */
+    public static void getTransactionAnnotation(ClassLoader classLoader, Map<String, Object> beans) {
+        TransactionManager transactionManager = (TransactionManager) beans.get("transactionManager");
+        for (Map.Entry<String,Object> temp : beans.entrySet()) {
+            String beanId = temp.getKey();
+            Object instance =  temp.getValue();
+
+            Class target = instance.getClass();
+            Annotation annotation = target.getAnnotation(Transaction.class);
+
+            if (null != annotation) {
+                //为目标类生成代理对象
+                Object proxy = null;
+                Class[] interfaces = target.getInterfaces();
+
+                DynamicProxy dynamicProxy = new DynamicProxy(transactionManager,instance);
+                if (interfaces.length > 0) {
+                    proxy = dynamicProxy.getJDKProxy(classLoader);
+                }else {
+                    proxy = dynamicProxy.getCGLIBProxy();
+                }
+
+                //用代理类对象替代目标类
+                beans.put(beanId,proxy);
+            }
+
         }
     }
 }

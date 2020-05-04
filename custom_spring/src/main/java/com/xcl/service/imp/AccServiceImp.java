@@ -9,9 +9,9 @@ import com.xcl.service.AccountService;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-@Service("accountService")
+@Service("accService")
 @Transaction
-public class AccountServiceImp implements AccountService{
+public class AccServiceImp{
 
     @Autowired
     private AccountDao accountDao;
@@ -21,7 +21,6 @@ public class AccountServiceImp implements AccountService{
      * @param to 收款人账号
      * @param money 本次交易金额
      */
-    @Override
     public void transfer(Integer from, Integer to, BigDecimal money) {
         try {
             //通过Autowired注入属性accountDao
