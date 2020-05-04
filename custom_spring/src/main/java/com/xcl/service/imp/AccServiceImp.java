@@ -4,6 +4,7 @@ import com.xcl.annotation.Autowired;
 import com.xcl.annotation.Service;
 import com.xcl.annotation.Transaction;
 import com.xcl.dao.AccountDao;
+import com.xcl.factory.BeanFactory;
 import com.xcl.service.AccountService;
 
 import java.math.BigDecimal;
@@ -13,8 +14,6 @@ import java.sql.SQLException;
 @Transaction
 public class AccServiceImp{
 
-    @Autowired
-    private AccountDao accountDao;
     /**
      * 转账业务
      * @param from 付款人账号
@@ -24,6 +23,7 @@ public class AccServiceImp{
     public void transfer(Integer from, Integer to, BigDecimal money) {
         try {
             //通过Autowired注入属性accountDao
+            AccountDao accountDao = (AccountDao) BeanFactory.getBean("accountDao");
             accountDao.transfer(from,to,money);
 
         } catch (SQLException e) {

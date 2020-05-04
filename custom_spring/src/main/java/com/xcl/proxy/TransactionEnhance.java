@@ -22,10 +22,13 @@ public class TransactionEnhance implements MethodInterceptor {
 
             result = methodProxy.invokeSuper(obj,args);
 
+
+
             //提交事务
             transactionManager.commit();
 
         }catch (Exception e) {
+            e.printStackTrace();
             System.out.println("CGLIB代理失败，"+e.getMessage());
             //回滚
             transactionManager.rollback();

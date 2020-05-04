@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class AccountServiceImp implements AccountService{
 
     @Autowired
-    private AccountDao accountDao;
+    AccountDao accountDao;
     /**
      * 转账业务
      * @param from 付款人账号
